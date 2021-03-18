@@ -1,0 +1,275 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Atlas",
+    "description": "This is Atlas API docs",
+    "version": "1.0.0",
+    "contact": {
+      "email": "brugerf@gmail.com"
+    }
+  },
+  "paths": {
+    "/users": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Create a new user",
+        "description": "Create a new user",
+        "required": ["requestBody"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Bruno"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "bruno@mail.com"
+                  }
+                },
+                "required": [
+                  "name",
+                  "email"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success!",
+            "content": {
+              "application/json":{
+                "schema": {
+                  "$ref":"#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "No email or name found or email already in use.",
+            "content":{
+              "application/json":{
+                  "schema":{
+                  "properties": {
+                    "error": {
+                        "type": "string",
+                        "example": "This email is already in use!"
+                      } 
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "List all users",
+        "description": "Only `admin` can list all users",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "header",
+            "required": true, 
+            "schema":{
+              "type":"string",
+              "format":"uuid"
+           }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success!",
+            "content": {
+              "application/json":{
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref":"#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "User has no permission or not found.",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "You need to be admin to list all users."
+                    } 
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{user_id}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Return a specific user",
+        "description": "Return a specific user with given id",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true, 
+            "schema":{
+              "type":"string",
+              "format":"uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref":"#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "User not found."
+                    } 
+                  }                    
+                }
+              }
+            }
+          }
+        }
+      }
+    }, 
+    "/users/{user_id}/admin": {
+      "patch": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Turn an user as admin",
+        "description": "Turn an user as admin",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true, 
+            "schema":{
+              "type":"string",
+              "format":"uuid"
+           }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "admin": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "id": {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                    "name": {
+                      "type": "string",
+                      "example": "User"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "user@example.com"
+                    },
+                    "created_at": {
+                      "type":"string",
+                      "format":"date-time"
+                    },
+                    "updated_at": {
+                      "type":"string",
+                      "format":"date-time"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found.",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "User not found"
+                    } 
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "admin": {
+            "type": "boolean",
+            "example": false
+          },
+         "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "example": "User"
+          },
+          "email": {
+            "type": "string",
+            "example": "user@example.com"
+          },
+          "created_at": {
+            "type":"string",
+            "format":"date-time"
+          },
+          "updated_at": {
+            "type":"string",
+            "format":"date-time"
+          }
+        }
+      }
+    }
+  }
+}
