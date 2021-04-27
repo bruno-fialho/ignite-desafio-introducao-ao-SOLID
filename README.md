@@ -23,6 +23,8 @@
 
 Essa é uma aplicação de listagem e cadastro de usuários. Para que a listagem de usuários funcione, o usuário que solicita a listagem deve ser um admin.
 
+A aplicação possui a documentação das rotas com o Swagger.
+
 ### :link: Instruções para clonar repositório
 
 Para rodar a aplicação na sua máquina:
@@ -42,6 +44,24 @@ A aplicação tem as seguintes rotas:
 - GET `/users/:user_id`: A rota deve receber, nos parâmetros da rota, o `id` de um usuário e devolver as informações do usuário encontrado pelo corpo da resposta.
 
 - GET `/users`: A rota deve receber, pelo header da requisição, uma propriedade `user_id` contendo o `id` do usuário e retornar uma lista com todos os usuários cadastrados. O `id` deverá ser usado para validar se o usuário que está solicitando a listagem é um admin. O retorno da lista deve ser feito apenas se o usuário for admin.
+
+### Documentação com Swagger
+
+1. Preparando ambiente para documentação
+
+- Instalar a lib `swagger-ui-express`;
+- Criar um arquivo JSON para você escrever a documentação na especificação OpenAPI 3.0;
+- Instanciar na sua aplicação uma rota `api-docs` que vai servir a sua documentação.
+
+2. O que está documentado?
+
+- Informações gerais da API (nome, descrição, etc.)
+- Rotas
+- Parâmetros
+- Corpo da Requisição
+- Respostas de sucesso
+- Respostas de erro
+- Exemplos
 
 ## :warning: Testes
 
